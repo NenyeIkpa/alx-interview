@@ -13,36 +13,41 @@ def print_values(file_total_size, status_codes):
             print('{}: {}'.format(status_code, status_codes[status_code]))
 
 
-file_total_size = 0
-status_codes = {}
+def main():
+    file_total_size = 0
+    status_codes = {}
 
-try:
-    line_count = 0
+    try:
+        line_count = 0
 
-    # Read input from stdin
-    for line in sys.stdin:
-        line_count += 1
+        # Read input from stdin
+        for line in sys.stdin:
+            line_count += 1
 
-        parts = line.strip().split()
-        if (len(parts) == 9):
+            parts = line.strip().split()
+            if (len(parts) != 9):
+                return
             [ip_address, dash, date1,
              date2, request1, request2, request3,
              status_code, file_size] = parts[:9]
 
-            if status_code.isdigit():
-                status_code = int(status_code)
-                file_size = int(file_size)
+            if not status_code.isdigit():
+                return
+            status_code = int(status_code)
+            file_size = int(file_size)
+            file_total_size += file_size
 
-                file_total_size += file_size
-                if status_code in status_codes:
-                    status_codes[status_code] += 1
-                else:
-                    status_codes[status_code] = 1
+            if status_code in status_codes:
+                status_codes[status_code] += 1
+            else:
+                status_codes[status_code] = 1
 
-                if line_count % 10 == 0:
-                    print_values(file_total_size, status_codes)
-        else:
-            print("len(parts) is more than 6. display {}".format(parts))
+            if line_count % 10 == 0:
+                print_values(file_total_size, status_codes)
 
-except KeyboardInterrupt:
-    print_values(file_total_size, status_codes)
+    except KeyboardInterrupt:
+        print_values(file_total_size, status_codes)
+
+
+if __name__ == "__main__":
+    main()
