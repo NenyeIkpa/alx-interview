@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-
 """
-N queens solution
+  N queens solution
 """
 import sys
 
